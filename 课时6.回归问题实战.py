@@ -41,12 +41,10 @@ def run():
     initial_b = 0
     initial_w = 0
     num_iters = 1000
-    print('Starting gradient descent at b = {0}, w = {1}, error = {2}'.format(initial_b, initial_w,
-           compute_error_for_line_given_points(initial_b, initial_w, points)))
+    print('Starting gradient descent at b = {0}, w = {1}, error = {2}'.format(initial_b, initial_w, compute_error_for_line_given_points(initial_b, initial_w, points)))
     print('Runing......')
     [b, w] = gradient_descent_runner(points, initial_b, initial_w, learning_rate, num_iters)
-    print('After {0} iterations b = {1}, w = {2}, error = {3}'.format(num_iters, b, w,
-           compute_error_for_line_given_points(b, w, points)))
+    print('After {0} iterations b = {1}, w = {2}, error = {3}'.format(num_iters, b, w, compute_error_for_line_given_points(b, w, points)))
 
 
 if __name__ == '__main__':
