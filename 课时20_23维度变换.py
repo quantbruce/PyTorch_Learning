@@ -55,3 +55,6 @@ print(a2.shape)
 print(torch.all(torch.eq(a, a1)))
 print(torch.all(torch.eq(a, a2)))
 
+"""
+注意：【b, h, w, c】 是numpy存储图片的格式，需要这一步才能导出numpy
+"""
