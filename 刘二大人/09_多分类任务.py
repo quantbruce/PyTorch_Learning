@@ -1,0 +1,139 @@
+### part1
+
+import numpy as np
+
+y = np.array([1, 0, 0])
+z = np.array([0.2, 0.1, -0.1])
+
+y_pred = np.exp(z)/np.exp(z).sum()
+print(y_pred)
+loss = (-y * np.log(y_pred)).sum()
+print(loss)
+
+
+### part2 (part2的代码和part1是等价的，只是调用了pytorch的库)
+import torch
+
+y = torch.LongTensor([0]) # 这里要用长整型
+z = torch.Tensor([[0.2, 0.1, -0.1]])
+criterion = torch.nn.CrossEntropyLoss() # 这一步就包含了计算exp()和loss
+loss = criterion(z, y)
+print(loss)
+
+
+### part3
+import torch
+
+criterion = torch.nn.CrossEntropyLoss()
+Y = torch.LongTensor([2, 0, 1])
+
+Y_pred1 = torch.Tensor([[0.1, 0.2, 0.9],
+                        [1.1, 0.1, 0.2],
+                        [0.2, 2.1, 0.1]])
+
+Y_pred2 = torch.Tensor([[0.8, 0.2, 0.3],
+                        [0.2, 0.3, 0.5],
+                        [0.2, 0.2, 0.5]])
+
+l1 = criterion(Y_pred1, Y)
+l2 = criterion(Y_pred2, Y)
+print('Batch Loss1 = ', l1.data, '\nBatch Loss2 = ', l2.data)
+
+
+### part4 MNIST手写数据集
+import torch
+from torchvision import transforms, datasets
+from torch.utils.data import DataLoader
+import torch.nn.functional as F
+import torch.optim as optim
+
+
+batch_size = 64
+transform = transforms.Compose([
+    transforms.ToTensor(),
+    transforms.Normalize((0.1307, ), (0.3081))
+])
+
+filepath = r'D:\geek growing\pytorch\刘二大人\PyTorch深度学习实践\datasets'
+
+train_dataset = datasets.MNIST(root=filepath
+                               , train=True
+                               , download=True
+                               , transform=transform
+                               )
+
+train_loader = DataLoader(train_dataset
+                          , shuffle=True
+                          , batch_size=batch_size)
+
+test_dataset = datasets.MNIST(root=filepath
+                              , train=False
+                              , download=True
+                              , transform=transform)
+
+test_loader = DataLoader(test_dataset
+                         , shuffle=False
+                         , batch_size=batch_size)
+
+# print(train_dataset)
+# print(test_dataset)
+
+
+class Net(torch.nn.Module):
+    def __init__(self):
+        super(Net, self).__init__()
+        self.l1 = torch.nn.Linear(784, 512)
+        self.l2 = torch.nn.Linear(512, 256)
+        self.l3 = torch.nn.Linear(256, 128)
+        self.l4 = torch.nn.Linear(128, 64)
+        self.l5 = torch.nn.Linear(64, 10)
+
+    def forward(self, x):
+        x = x.view(-1, 784)
+        x = F.relu(self.l1(x))
+        x = F.relu(self.l2(x))
+        x = F.relu(self.l3(x))
+        x = F.relu(self.l4(x))
+        return self.l5(x)
+
+model = Net()
+
+criterion = torch.nn.CrossEntropyLoss()
+optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.5)
+
+
+def train(epoch):
+    running_loss = 0.0
+    for batch_idx, data in enumerate(train_loader, 0):
+        inputs, target = data
+        optimizer.zero_grad()
+        # forward + backward + update
+        outputs = model(inputs)
+        loss = criterion(outputs, target)
+        loss.backward()
+        optimizer.step()
+
+        running_loss += loss.item()
+        if batch_idx % 100 == 99:
+            print('[epochs: %d, batch_idx: %5d] loss: %.3f' % (epoch+1, batch_idx+1, running_loss/300))
+            running_loss = 0
+
+
+def test():
+    correct, total = 0, 0
+    with torch.no_grad(): # test_data上不需要反向求梯度
+        for data in test_loader:
+            images, labels = data
+            outputs = model(images)
+            _, predicted = torch.max(outputs.data, dim=1)  # 返回两个，最大值和最大值的下标
+            total += labels.size(0)
+            correct += (predicted == labels).sum().item()
+    print('Accuracy on test set: %d %%' % (100 * correct / total) )
+
+
+if __name__ == '__main__':
+    for epoch in range(10):
+        train(epoch)
+        test()
+        
+        
