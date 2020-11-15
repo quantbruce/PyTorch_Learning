@@ -29,7 +29,7 @@ dataset = DiabetesDataset(filepath)
 train_loader = DataLoader(dataset=dataset
                           , batch_size=32
                           , shuffle=True
-                          # num_workers=2
+                          # num_workers=2  # 这一行多进程的代码加了就会报错，暂未解决
                          )
 
 
