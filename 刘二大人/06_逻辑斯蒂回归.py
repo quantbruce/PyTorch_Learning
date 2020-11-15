@@ -6,7 +6,7 @@ y_data = torch.tensor([[2.0], [4.0], [6.0]])
 class LogisticModel(torch.nn.Module):
     def __init__(self):
         super(LogisticModel, self).__init__()
-        self.linear = torch.nn.Linear(1, 1)
+        self.linear = torch.nn.Linear(1, 1) # input dim =1 , output dim = 1
 
     def forward(self, x):
         y_pred = torch.sigmoid(self.linear(x))
