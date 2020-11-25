@@ -21,9 +21,9 @@ for epoch in range(100):
     loss = criterion(y_pred, y_data)
     print(epoch, loss.item())
 
-    optimizer.zero_grad()
+    optimizer.zero_grad() # 所有梯度归0
     loss.backward()
-    optimizer.step()
+    optimizer.step() # update: w = w - lr * grad
 
 
 print('w = ', model.linear.weight.item())
