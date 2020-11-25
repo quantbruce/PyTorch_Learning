@@ -6,7 +6,7 @@ y_data = torch.Tensor([[2.0], [4.0], [6.0]])
 class LinearModel(torch.nn.Module):
     def __init__(self):
         super(LinearModel, self).__init__()
-        self.linear = torch.nn.Linear(1, 1)
+        self.linear = torch.nn.Linear(1, 1) # 输入是一维，输出也是一维
 
     def forward(self, x):
         y_pred = self.linear(x)
