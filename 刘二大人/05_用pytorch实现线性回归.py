@@ -21,7 +21,7 @@ for epoch in range(100):
     loss = criterion(y_pred, y_data)
     print(epoch, loss.item())
 
-    optimizer.zero_grad() # 所有梯度归0
+    optimizer.zero_grad() # 记住顺序，在backward之前要把所有梯度归0
     loss.backward()
     optimizer.step() # update: w = w - lr * grad
 
