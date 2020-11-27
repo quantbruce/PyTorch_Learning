@@ -21,7 +21,7 @@ class DiabetesDataset(Dataset):
         return self.len
 
 
-filepath = r'D:\geek growing\pytorch\刘二大人\PyTorch深度学习实践\diabetes.csv\diabetes.csv'
+filepath = r'D:\geek growing\pytorch\刘二大人\PyTorch深度学习实践\datasets\diabetes\diabetes.csv'
 dataset = DiabetesDataset(filepath)
 # print(dataset.len) # 758 行, 所以itertion = 758 / 32 = 24, 这就是后面 i = 0, 1, 2, ..., 24的原因
 
