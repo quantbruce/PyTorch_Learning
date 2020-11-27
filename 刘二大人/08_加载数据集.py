@@ -12,7 +12,7 @@ class DiabetesDataset(Dataset):
         data = np.array(data)
         self.len = data.shape[0]
         self.x_data = torch.from_numpy(data[:, :-1])
-        self.y_data = torch.from_numpy(data[:, [-1]])
+        self.y_data = torch.from_numpy(data[:, [-1]]) # 这里-1要加括号，不然导出的维度是错的
 
     def __getitem__(self, index):
         return self.x_data[index], self.y_data[index]
