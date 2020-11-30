@@ -24,7 +24,7 @@ print(loss)
 ### part3
 import torch
 
-criterion = torch.nn.CrossEntropyLoss()
+criterion = torch.nn.CrossEntropyLoss() # 要理解交叉损失的计算轨迹，本质：CrossEntropyLoss = log(softmax) + NLLLoss 
 Y = torch.LongTensor([2, 0, 1]) # 原真实标签分别是 2,0,1 对应下面第一行、第二行、第三行
                 #输出标签  0    1    2
 Y_pred1 = torch.Tensor([[0.1, 0.2, 0.9],  # 2的概率最大, 所以输出预测为2，真实标签为2，一致。
