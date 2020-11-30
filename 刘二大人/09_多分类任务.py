@@ -135,7 +135,7 @@ def test():
 
 if __name__ == '__main__':
     for epoch in range(10):
-        train(epoch)
+        train(epoch) # 这样封装起来能保持代码的简洁性，不然主程序这一大堆，可读性较低。
         test()
         
         
