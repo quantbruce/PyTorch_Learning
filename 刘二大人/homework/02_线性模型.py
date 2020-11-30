@@ -47,7 +47,7 @@ Z_mse = np.array(mse_list).reshape((400, 400))
 fig = plt.figure()
 ax = fig.gca(projection='3d')
 
-surf = ax.plot_surface(X_w, Y_b, Z_mse, cmap=cm.coolwarm, linewidth=0, antialiased=False)
+surf = ax.plot_surface(X_w, Y_b, Z_mse, cmap=cm.coolwarm, linewidth=0, antialiased=False) # 这些绘图函数的具体参数日后再细究
 fig.colorbar(surf, shrink=0.5, aspect=5)
 
 # ax.set_zlim(-1.01, 1.01)
