@@ -51,7 +51,7 @@ import torch.optim as optim
 batch_size = 64
 transform = transforms.Compose([   # transform主要是用来针对图像做一些各种原始化的处理，将像素数据[0, 255]处理成神经网络喜欢的0-1范围之间，并且服从正态分布的数据。
     transforms.ToTensor(), # 将[0, 255]的值压缩到[0, 1]，把w*h*c --> c*w*h. 可以理解成单通道变成多通道。
-    transforms.Normalize((0.1307, ), (0.3081))
+    transforms.Normalize((0.1307, ), (0.3081)) # 均值0.1307, 标准差0.3081
 ])
 
 filepath = r'D:\geek growing\pytorch\刘二大人\PyTorch深度学习实践\datasets'
