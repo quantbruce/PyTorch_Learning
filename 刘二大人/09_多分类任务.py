@@ -110,6 +110,7 @@ def train(epoch):
         # forward + backward + update
         outputs = model(inputs)
         loss = criterion(outputs, target)
+        # optimizer.zero_grad() 这行代码放这里也是可行的，自己体会下
         loss.backward()
         optimizer.step()
 
