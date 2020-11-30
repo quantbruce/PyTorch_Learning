@@ -48,7 +48,7 @@ for epoch in range(100):
     loss = criterion(y_pred, y_data)
     print('epoch: ', epoch, 'loss: ', loss.item())
     # backward
-    optimizer.zero_grad()
+    optimizer.zero_grad() # 为什么这个optimizer.zero_grad()是放在这里？而后面09_课却又放在最开始的位置？
     loss.backward()
     # updata
     optimizer.step()
