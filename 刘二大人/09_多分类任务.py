@@ -49,7 +49,7 @@ import torch.optim as optim
 
 
 batch_size = 64
-transform = transforms.Compose([
+transform = transforms.Compose([   # transform主要是用来针对图像做一些各种原始化的处理
     transforms.ToTensor(),
     transforms.Normalize((0.1307, ), (0.3081))
 ])
