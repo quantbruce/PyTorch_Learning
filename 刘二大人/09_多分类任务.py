@@ -7,7 +7,7 @@ z = np.array([0.2, 0.1, -0.1])
 
 y_pred = np.exp(z)/np.exp(z).sum()
 print(y_pred)
-loss = (-y * np.log(y_pred)).sum()
+loss = (-y * np.log(y_pred)).sum() # 实际中，由于这里概率最大label为1，其他都为0，所以往往直接提取概率最大的label出来算，其他label为0的项直接不管。
 print(loss)
 
 
