@@ -14,7 +14,7 @@ print(loss)
 ### part2 (part2的代码和part1是等价的，只是调用了pytorch的库)
 import torch
 
-y = torch.LongTensor([0]) # 这里要用长整型，[0]是指第0个分类
+y = torch.LongTensor([0]) # 这里要用长整型，[0]是指第0个分类，也就是对应第5行代码的[1, 0, 0]，只有第0个下标非0，其他都为0，所以直接提取出[0]来算，避免所有求和运算，更加高效
 z = torch.Tensor([[0.2, 0.1, -0.1]])
 criterion = torch.nn.CrossEntropyLoss() # 这一步就包含了计算exp()和loss
 loss = criterion(z, y)
