@@ -88,7 +88,7 @@ class Net(torch.nn.Module):
     def __init__(self):
         super(Net, self).__init__()
         self.l1 = torch.nn.Linear(93, 64)
-        self.l2 = torch.nn.Linear(64, 48)
+        self.l2 = torch.nn.Linear(64, 48) # 模型可以更加复杂些, 加批量正则化，dropout等处理
         self.l3 = torch.nn.Linear(48, 24)
         self.l4 = torch.nn.Linear(24, 16)
         self.l5 = torch.nn.Linear(16, 9)
