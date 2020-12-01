@@ -124,7 +124,7 @@ def test():
     correct, total = 0, 0
     with torch.no_grad(): # test_data上不需要反向求梯度
         for data in test_loader:
-            images, labels = data
+            images, labels = data # 测试集怎么会有label呢？
             outputs = model(images)
             _, predicted = torch.max(outputs.data, dim=1)  # 返回两个，最大值和最大值的下标. 输出的predicted是个Tensor类型
            # res.extend(predicted.numpy())   可以新建个res， 用来保存预测输出的标签，但这个extend是简单拼接，其实是部队的。换做多次计算取均值的思路更合适。
