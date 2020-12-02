@@ -34,7 +34,7 @@ test_loader = DataLoader(test_dataset
                          , shuffle=False
                          , batch_size=batch_size)
 
-####################################################################################################### 代码不同之处在以下框起来部分
+####################################################################################################### 代码不同之处在以下框起来部分, 好好琢磨清楚
 
 class InceptionA(torch.nn.Module):
     def __init__(self, in_channels):
@@ -77,7 +77,7 @@ class Net(torch.nn.Module):
         self.incep2 = InceptionA(in_channels=20)
 
         self.mp = torch.nn.MaxPool2d(2)
-        self.fc = torch.nn.Linear(1408, 10)
+        self.fc = torch.nn.Linear(1408, 10) # 这个1408是根据MNIST数据集维度计算出来的
 
     def forward(self, x):
         in_size = x.size(0)
@@ -86,7 +86,7 @@ class Net(torch.nn.Module):
         x = F.relu(self.mp(self.conv2(x)))
         x = self.incep2(x)
         x = x.view(in_size, -1)
-        x = self.fc(x)
+        x = self.fc(x)  # 这个算法pycharm本地上跑可以跑出准确率上99%, 比之前98%，97%有较大提升。推测影响该模型性能的主要原因在于，全连接层数目太少，降维降的太猛烈。
         return x
 
 ###########################################################################################################
@@ -140,3 +140,6 @@ if __name__ == '__main__':
     for epoch in range(20):
         train(epoch)  # 这样封装起来能保持代码的简洁性，不然主程序这一大堆，可读性较低。
         test()
+
+        
+        
