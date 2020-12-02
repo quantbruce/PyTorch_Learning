@@ -32,7 +32,7 @@ test_dataset = datasets.MNIST(root=filepath
 
 test_loader = DataLoader(test_dataset
                          , shuffle=False
-                         , batch_size=batch_size)
+                         , batch_size=batch_size) 
 
 ####################################################################################################### 代码不同之处在以下框起来部分, 好好琢磨清楚
 
@@ -48,7 +48,7 @@ class InceptionA(torch.nn.Module):
         self.branch3x3_2 = torch.nn.Conv2d(16, 24, kernel_size=3, padding=1)
         self.branch3x3_3 = torch.nn.Conv2d(24, 24, kernel_size=3, padding=1)
 
-        self.branch_pool = torch.nn.Conv2d(in_channels, 24, kernel_size=1)
+        self.branch_pool = torch.nn.Conv2d(in_channels, 24, kernel_size=1) # branch_pool只是代表分支的命名而已，根据那个InceptionA结构图，实际是先进行卷积运算
 
     def forward(self, x):
         branch1x1 = self.branch1x1(x)
@@ -64,20 +64,20 @@ class InceptionA(torch.nn.Module):
         branch_pool = self.branch_pool(branch_pool)
 
         outputs = [branch1x1, branch5x5, branch3x3, branch_pool]
-        return torch.cat(outputs, dim=1)
+        return torch.cat(outputs, dim=1)   # B,C,W,H dim=1就是按照通道C的方向去拼接
 
 
 class Net(torch.nn.Module):
     def __init__(self):
         super(Net, self).__init__()
         self.conv1 = torch.nn.Conv2d(1, 10, kernel_size=5)
-        self.conv2 = torch.nn.Conv2d(88, 20, kernel_size=5)
+        self.conv2 = torch.nn.Conv2d(88, 20, kernel_size=5) # InceptionA中各个分支输出通道的和 24 + 16 + 24 + 24 = 88
 
-        self.incep1 = InceptionA(in_channels=10)
-        self.incep2 = InceptionA(in_channels=20)
+        self.incep1 = InceptionA(in_channels=10) # 不管InceptionA的输入通道是多少，输出通道都是 88 维
+        self.incep2 = InceptionA(in_channels=20) # InceptionA的作用也仅仅只能改变通道C的维度，其他几个维度保持不变
 
         self.mp = torch.nn.MaxPool2d(2)
-        self.fc = torch.nn.Linear(1408, 10) # 这个1408是根据MNIST数据集维度计算出来的
+        self.fc = torch.nn.Linear(1408, 10)   # (1)     # 这个1408是根据MNIST数据集维度计算出来的
 
     def forward(self, x):
         in_size = x.size(0)
@@ -85,9 +85,9 @@ class Net(torch.nn.Module):
         x = self.incep1(x)
         x = F.relu(self.mp(self.conv2(x)))
         x = self.incep2(x)
-        x = x.view(in_size, -1)
-        x = self.fc(x)  # 这个算法pycharm本地上跑可以跑出准确率上99%, 比之前98%，97%有较大提升。推测影响该模型性能的主要原因在于，全连接层数目太少，降维降的太猛烈。
-        return x
+        x = x.view(in_size, -1) # (2)      # 这个算法pycharm本地上跑可以跑出准确率上99%, 比之前98%，97%有较大提升。推测影响该模型性能的主要原因在于，下一行全连接层数目太少，降维降的太猛烈。
+        x = self.fc(x)          # (3)      # 1408是MNIST 28*28的数据一路运算过来 88*4*4 = 1408
+        return x                           # 将(1)(2)(3)(4)(5)几个部分，分别注释和恢复后，就可以实现让计算机自动推导计算出维度(64, 88, 4, 4) 其实后三项之积就等于1408
 
 ###########################################################################################################
 
@@ -113,6 +113,8 @@ def train(epoch):
         optimizer.zero_grad()
         # forward + backward + update
         output = model(inputs)
+        # print(output.size())      #  (4)
+        # exit()                    #  (5)
         loss = criterion(output, target)
         loss.backward()
         optimizer.step()
