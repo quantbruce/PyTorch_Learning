@@ -24,7 +24,7 @@ train_dataset = datasets.MNIST(root=filepath
 train_loader = DataLoader(train_dataset
                           , shuffle=True
                           , batch_size=batch_size)
-
+ 
 test_dataset = datasets.MNIST(root=filepath
                               , train=False
                               , download=True
@@ -80,7 +80,7 @@ class Net(torch.nn.Module):
         self.fc = torch.nn.Linear(1408, 10)   # (1)     # 这个1408是根据MNIST数据集维度计算出来的
 
     def forward(self, x):
-        in_size = x.size(0) # 一开始的维度torch.Size([64, 1, 28, 28]), 故in_size = 64
+        in_size = x.size(0) # 一开始的维度torch.Size([64, 1, 28, 28]), 故in_size = 64(batch_size)
         x = F.relu(self.mp(self.conv1(x)))
         x = self.incep1(x)
         x = F.relu(self.mp(self.conv2(x)))
