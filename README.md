@@ -1,2 +1,2 @@
-# PyTorch_learning
+# PyTorch_Learning
 ## From Zero to Hero
